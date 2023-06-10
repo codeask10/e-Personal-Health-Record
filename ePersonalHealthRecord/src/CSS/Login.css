@@ -1,0 +1,44 @@
+/* CSS code */
+
+.nav-pills {
+    width: 80%;
+    margin: auto; /* center the element */
+  }
+  
+  .nav-link {
+    font-size: 18px;
+  }
+  
+  /* Media queries for smaller screens */
+  @media (max-width: 576px) {
+    .nav-pills {
+      width: 100%;
+    }
+    .nav-link {
+      font-size: 16px;
+    }
+  }
+  
+
+
+/* login input */
+.ui.form.mb-4 {
+    width: 50%;
+    margin: 0 auto;
+  }
+ 
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}

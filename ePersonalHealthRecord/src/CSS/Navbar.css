@@ -1,0 +1,28 @@
+.navbar{
+  background-color: #0001 ;
+  font-size: large;
+}
+.nav-link{
+  font-weight: bold;
+}
+.nav-link:hover{
+  background-color: rgba(0, 0, 0, 0.554);
+  border-radius: 6px;
+}
+  @media screen and (max-width: 768px)  {
+    body {
+      background-size: contain;
+      background-position: top;
+      height: "100vh", 
+    }
+    .navbar .navbar-brand {
+        font-size: 1.1em;
+      }
+    .nav-link{
+      font-size:14px;
+      color: firebrick;
+    }
+    
+  }
+  
+  

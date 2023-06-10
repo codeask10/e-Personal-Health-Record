@@ -1,0 +1,10 @@
+
+@media only screen and (max-width: 768px) {
+  /* .field {
+    flex-direction: column-reverse;
+  } */
+  
+  .myElement {
+    text-align: right;
+  }
+}
