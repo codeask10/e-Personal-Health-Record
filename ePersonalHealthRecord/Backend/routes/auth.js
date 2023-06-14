@@ -4,6 +4,7 @@ const User = require("../modals/Auth")
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 var bcrypt = require('bcryptjs');
+var fetchuser = require('../middleware/fetchuser');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -88,9 +89,19 @@ router.post('/login', [
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
-    }
-  
-  
-  });
+    }  
+});
+  // ROUTE 3: Get loggedin User Details using: POST "/api/auth/getuser". Login required
+router.post('/getuser', fetchuser,  async (req, res) => {
+
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId).select("-password")
+    res.send(user)
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 module.exports = router;
