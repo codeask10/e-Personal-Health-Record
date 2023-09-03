@@ -1,23 +1,57 @@
-import React from 'react'
+import React,{useState} from 'react'
 import moment from 'moment';
-
 const Userprofile = () => {
     let date = moment(new Date()).format('YYYY-MM-DD')
+
+    // const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" })
+    // const navigate = useNavigate();
+    // const { name, email, password,cpassword} = credentials
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+        
+    //     if (password === cpassword) {
+    //         const response = await fetch(`http://localhost:5000/api/auth/createuser`, {
+    //             method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ name, email, password })
+    //         });
+    //         // eslint-disable-next-line 
+    //         const json = await response.json();
+    //         if (json.success) {
+    //             localStorage.setItem('token', json.authtoken)
+    //             navigate('/');
+    //             props.showAlert(" Account created successfully ", "success")
+    //             setCredentials({ name: "", email: "", password: "", cpassword: "" })
+
+    //         }
+    //         else {
+    //             props.showAlert("Sorry a user with this email already exists", "danger")
+    //         }
+    //     }
+    //     else {
+    //         props.showAlert("Confirm Password does not match", "danger")
+    //     }
+    // }
+    // const onChange = (e) => {
+    //   setCredentials({ ...credentials, [e.target.name]: e.target.value })
+    // }
   return (
     <div className=" ui container mt-5">
       <h2 className="ui dividing header">User  Profile</h2>
-      <form className=" ui large form  mb-0">
+      <form className=" ui large form  mb-0" >
         <div className="two fields ms-2">
           <div className="  field" >
               <label  htmlFor="fname">First name</label>
             <div className="ui  input">
-              <input type="text" id="fname" placeholder="First name"  />
+              <input type="text" id="fname"  name="fname"  placeholder="First name"  />
             </div>
           </div>
           <div className="  field" >
               <label  htmlFor="lname">Last name</label>
             <div className="ui  input">
-              <input type="text" id="lname"  placeholder="Last name" />
+              <input type="text" id="lname"  name="lname"  placeholder="Last name" />
             </div>
           </div>
         </div>
@@ -25,13 +59,13 @@ const Userprofile = () => {
           <div className="  field" >
               <label className="" htmlFor="dob">Date of Birth</label>
             <div className="ui  input">
-              <input type="date" id="dob" max={date}  placeholder="Date of birth" />
+              <input type="date" id="dob" name="dob"  max={date}  placeholder="Date of birth" />
             </div>
           </div>
           <div className="  field" >
               <label className="" htmlFor="gender">Gender</label>
             <div className="ui  input">
-              <select  id="gender" >
+              <select  id="gender" name="gender"  >
                 <option selected>Select gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -45,33 +79,33 @@ const Userprofile = () => {
               <label className="" htmlFor="phoneno">Phone No</label>
             <div className="ui labeled input">
                 <div className="input-group-text">+91</div>
-                <input type="tel"  className="form-control" pattern="[6789][0-9]{9}" title="Please enter valid phone number" id="inlineFormInputGroupUsername" placeholder="Enter the Phone-no" />
+                <input type="tel"  name="phoneno"  className="form-control" pattern="[6789][0-9]{9}" title="Please enter valid phone number" id="phoneno" placeholder="Enter the Phone-no" />
             </div>
           </div>
           <div className="  field" >
-              <label className="" htmlFor="typeEmail">Email</label>
+              <label className="" htmlFor="email">Email</label>
             <div className="ui  input">
-              <input type="email" id="typeEmail" pattern="/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/" placeholder="email@.xyz" />
+              <input type="email"  name="email" id="email" pattern="/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/" placeholder="email@.xyz" />
             </div>
           </div>
         </div>
         <div className=" wide field ms-3">
             <label  htmlFor="address">Residence Address</label>
           <div className="ui  input">
-            <input type="text"  id="address" placeholder="Residence address... " />
+            <input type="text"  name="address"  id="address" placeholder="Residence address... " />
           </div>
         </div>
         <div className="two fields ms-2">
           <div className="  field" >
               <label  htmlFor="city">City</label>
             <div className="ui  input">
-              <input type="text" id="city" placeholder="City...."   />
+              <input type="text" name="city"  id="city" placeholder="City...."   />
             </div>
           </div>
           <div className="  field" >
-              <label  htmlFor="pin">Pin Code</label>
+              <label  htmlFor="pincode">Pin Code</label>
             <div className="ui  input">
-              <input type="text" id="pin"   pattern="[1-9]{6}" title="Six digit pin code" placeholder="Pin code....." />
+              <input type="text" id="pincode" name="pincode"  pattern="[1-9]{1}[0-9]{5}" title="Six digit pin code" placeholder="Pin code....." />
             </div>
           </div>
         </div>
@@ -79,7 +113,7 @@ const Userprofile = () => {
           <div className="  field" >
               <label  htmlFor="state">State</label>
             <div className="ui  input">
-              <select name="state" id="state" className="ui dropdown">
+              <select name="state" id="state"   className="ui dropdown">
                 <option selected>State</option>
                 <option value="Andhra Pradesh">Andhra Pradesh</option>
                 <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
@@ -123,7 +157,7 @@ const Userprofile = () => {
           <div className="  field" >
               <label  htmlFor="country">Country</label>
             <div className="ui  input">
-              <input type="text" id="country"  placeholder="Country..." />
+              <input type="text"  name="country" id="country"  placeholder="Country..." />
             </div>
           </div>
         </div>

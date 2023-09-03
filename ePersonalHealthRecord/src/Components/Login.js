@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+    import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import '../CSS/Login.css'
 const Login = () => {
     // for login
@@ -8,19 +9,71 @@ const Login = () => {
     });
     
     const handleChange=(e)=>{
-        setUser({...users, [e.target.name]:[e.target.value]})
+        setUser({...users, [e.target.name]: e.target.value });
+    }
+    const navigate = useNavigate();
+    const login= async(e)=>{
+        console.log("in login section",users.email,users.password);
+        e.preventDefault();
+        const response= await fetch("http://localhost:5001/api/user/login",{
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: users.email, password: users.password })
+        });
+        console.log(response.json);
+        // eslint-disable-next-line
+        const json = await response.json();
+        if(json.success){
+            localStorage.setItem('token',json.authtoken)
+            navigate('/');
+            alert("Account logged in successfully  ","success")            
+        }
+        else{
+           alert("Invalid credential ","danger")
+
+        }
     }
 
     // For Registration
     const [register, setRegister]= useState({
         name:"",
-        username:"",
         email:"",
         password:"",
         cPassword:""
     })
-    const handleSubmit=(e)=>{
-        setRegister({...register, [e.target.name]:[e.target.value]})
+    const onChange=(e)=>{
+        setRegister({...register, [e.target.name]:e.target.value});
+    }
+    const { name, email, password,cPassword} = register
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (password ===  cPassword) {
+            const response = await fetch(`http://localhost:5001/api/user/register`, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, password })
+            });
+            // eslint-disable-next-line 
+            const json = await response.json();
+            if (json.success) {
+                console.log("I am in")
+                localStorage.setItem('token', json.authtoken)
+                // navigate('/');
+                alert(" Account created successfully ", "success")
+                setRegister({ name: "", email: "", password: "", cPassword: "" })
+
+            }
+            else {
+                alert("Sorry a user with this email already exists", "danger")
+            }
+        }
+        else {
+            alert("Confirm Password does not match", "danger")
+        }
     }
     return (
         <div className='ui container mt-5'>
@@ -37,7 +90,7 @@ const Login = () => {
 
             <div className="tab-content">
                 <div className="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                    <form className='form'>
+                    <form className='form' onSubmit={login}> 
                         <div className="text-center mb-3">
                             <p>Sign in with:</p>
                             <button type="button" className="btn btn-link btn-floating mx-1">
@@ -89,7 +142,7 @@ const Login = () => {
                     </form>
                 </div>
                 <div className="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="text-center mb-3">
                             <p>Sign up with:</p>
                             <button type="button" className="btn btn-link btn-floating mx-1">
@@ -112,27 +165,27 @@ const Login = () => {
                         <p className="text-center">or:</p>
                         <div className="d-flex justify-content-center">
                             <div className="form mb-4 " style={{ width: '400px', height: '50px' }}>
-                                <label className="form-label" htmlFor="registerName">Name</label>
-                                <input type="text" name="name" value={register.name} onChange={handleSubmit} id="registerName" placeholder="Name..." className="form-control" />
+                                <label className="form-label" htmlFor="name">Name</label>
+                                <input type="text" name="name" value={register.name} onChange={onChange} id="name" placeholder="Name..." className="form-control" />
                             </div>
                         </div>
                         <div className="d-flex justify-content-center">
                             <div className="form mb-4" style={{ width: '400px', height: '50px' }}>
-                                <label className="form-label"  htmlFor="registerEmail">Email</label>
-                                <input type="email" name="email" value={register.email}  onChange={handleSubmit} id="registerEmail" placeholder="Email..." className="form-control" />
+                                <label className="form-label"  htmlFor="email">Email</label>
+                                <input type="email" name="email" value={register.email}  onChange={onChange} id="email" placeholder="Email..." className="form-control" />
                             </div>
                         </div>
                         <div className="d-flex justify-content-center">
                             <div className="form mb-4" style={{ width: '400px', height: '50px' }}>
-                                <label className="form-label" htmlFor="registerPassword">Password</label>
-                                <input type="password" name="password" value={register.password} onChange={handleSubmit} id="registerPassword" placeholder="Password..." className="form-control" />
+                                <label className="form-label" htmlFor="password">Password</label>
+                                <input type="password" name="password" value={register.password} onChange={onChange} id="password" placeholder="Password..." className="form-control" />
                             </div>
                         </div>
 
                         <div className="d-flex justify-content-center">
                             <div className="form mb-4" style={{ width: '400px', height: '50px' }}>
-                                <label className="form-label" htmlFor="registerRepeatPassword">Repeat password</label>
-                                <input type="password" name="cPassword" value={register.cPassword} onChange={handleSubmit} id="registerRepeatPassword" placeholder="Repeat password..." className="form-control" />
+                                <label className="form-label" htmlFor="cPassword">Repeat password</label>
+                                <input type="password" name="cPassword" value={register.cPassword} onChange={onChange} id="cPassword" placeholder="Repeat password..." className="form-control" />
                             </div>
                         </div>
                         <div className="d-flex justify-content-center">

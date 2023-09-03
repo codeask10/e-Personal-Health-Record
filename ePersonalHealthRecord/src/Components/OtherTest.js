@@ -81,7 +81,9 @@ const OtherTest = () => {
               <input type="text" id="technolgy" name="technology" placeholder="Technology Name..." />
             </div>
           </div>
-          <h4 className='ui dividing header '>Typhoid Test  </h4>
+        </div>
+        <h4 className='ui dividing header '>Typhoid Test  </h4>
+        <div className="ui grid">
           <div className="doubling four column row">
             <div className="field column "  >
               <label htmlFor='typhoid-igm'>Typhoid IGM:</label>
@@ -118,61 +120,6 @@ const OtherTest = () => {
               <input type="text" id="technolgy" name="technology" placeholder="Technology Name.." />
             </div>
           </div>
-          <h4 className='ui dividing header '>Serum Test</h4>
-          <div className="doubling four column row">
-            <div className="field column "  >
-              <label htmlFor='t3'>Total Triodothyronine(T3)</label>
-              <div className="ui right labeled input">
-                <input type="text" id="t3" name="t3" dmin="0" max="100" step="0.1" placeholder="Total T3..." />
-                <div className="ui basic label px-1">
-                  ng/dl
-                </div>
-              </div>
-            </div>
-            <div className="field column myElement">
-              <label>Ref. Range</label>
-              <div className="ui large label mt-1">
-                <h5>15-45</h5>
-              </div>
-            </div>
-            <div className="field column "  >
-              <label htmlFor='t4'>Total Thyroxine(T4)</label>
-              <div className="ui right labeled input">
-                <input type="number" id="t4" name="serum sodium" dmin="0" max="30" step="0.1" placeholder="Enter a value" />
-                <div className="ui basic label px-1">
-                  μg/dl
-                </div>
-              </div>
-            </div>
-            <div className="field column myElement">
-              <label>Ref. Range</label>
-              <div className="ui large label mt-1">
-                <h5>4.5-12</h5>
-              </div>
-            </div>
-          </div>
-          <div className="doubling three column row">
-            <div className="field column "  >
-              <label htmlFor='tsh'>Tyhroid Stimulating Harmone(TSH)</label>
-              <div className="ui right labeled input">
-                <input type="text" id="tsh" name="tsh" min="0" max="20" step="0.1" placeholder="Value of TSH.." />
-                <div className="ui basic label px-1">
-                  μg/dl
-                </div>
-              </div>
-            </div>
-            <div className="two wide computer field column myElement ">
-              <label>Ref. Range</label>
-              <div className="ui large label mt-1">
-                <h5>0.35-4.5</h5>
-              </div>
-            </div>
-            <div className=" field column">
-              <label htmlFor='technolgy'>Technology Name</label>
-              <input type="text" id="technolgy" name="technology" placeholder="Technology name..." />
-            </div>
-          </div>
-
         </div>
         <div className=" my-5" style={{ textAlign: "center" }}>
           <button className="ui button me-3" type="submit">Save</button>

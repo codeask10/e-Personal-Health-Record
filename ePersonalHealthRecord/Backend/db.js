@@ -12,7 +12,7 @@ const options = {
 };
 
 // Connect to MongoDB
-const onnectToMongoose=()=>{
+const connectToMongoose=()=>{
 mongoose.connect(mongoURI, options)
   .then(() => {
     console.log('MongoDB connected');
@@ -22,4 +22,4 @@ mongoose.connect(mongoURI, options)
   });
 }
 
-module.exports =  onnectToMongoose;
+module.exports =  connectToMongoose;
