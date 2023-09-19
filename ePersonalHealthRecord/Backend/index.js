@@ -16,7 +16,7 @@ mongoose();
 app.use("/api/user", require("./routes/auth"))
 app.use("/api/home", require("./routes/home"))
 app.use("/api/prescription", require("./routes/prescription"))
-
+app.use("/api/CBC", require("./routes/cbc"))
 app.listen(port, () => {
     console.log(`ePHR  backend  listening on port http://localhost:${port}`)
   })

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useNavigate } from "react-router-dom";
 import img from '../Image/img13.jpg';
 import "../CSS/Navbar.css";
 const Navbar = () => {
@@ -22,6 +22,15 @@ const Navbar = () => {
     }
     const bgImage = pathname !== '/Login' && pathname !== '/Signup' && pathname !== '/About'? myStyle: myStyle1;
 
+    const navigate = useNavigate();
+    
+    const handleLogout=(e)=>{
+        localStorage.removeItem('token')
+        e.preventDefault();
+        navigate('/')
+    }
+    
+
     // transparent Background image  for Navbar
     return (
         <div className="img" style={bgImage}>
@@ -41,7 +50,7 @@ const Navbar = () => {
                                 <Link className={`nav-link ${location.pathname === "/Prescription" ? "active" : ""}`} to="/Prescription">Prescription</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname === "/CBC" ? "active" : ""}`} to="/CBR">CBC</Link>
+                                <Link className={`nav-link ${location.pathname === "/CBC" ? "active" : ""}`} to="/CBC">CBC</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/Urine" ? "active" : ""}`} to="/Urine">Urine</Link>
@@ -59,9 +68,14 @@ const Navbar = () => {
                                 <Link className={`nav-link ${location.pathname === "/About" ? "active" : ""}`} to="/About">About</Link>
                             </li>
                         </ul>
+                        {!localStorage.getItem('token')?
                         <form className="d-flex navbar-nav  ms-auto ">
                             <Link to="/Login" className=" nav-link ">Login</Link>
+                        </form>:
+                        <form className="d-flex navbar-nav  ms-auto ">
+                        <Link className="nav-link"  onClick={handleLogout}> Logout</Link>
                         </form>
+                        }
                     </div>
                 </div>
             </nav>

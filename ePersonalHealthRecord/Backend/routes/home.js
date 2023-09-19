@@ -19,7 +19,6 @@ router.get('/fetchdata',fetchuser,async(req, res)=>{
 router.post('/addData',fetchuser,async(req, res)=>{
     try {
         const {age,bloodGroup,height,weight,temperature,bodyMassIndex,bloodPressure,pulseRate,cholesterol,bloodGlucose,bloodOxygen,respirationRate}=req.body;
-        console.log(bloodPressure)
         const homeData= new Home({
             user:req.user.id,age,bloodGroup,height,weight,temperature,bodyMassIndex,bloodPressure,pulseRate,cholesterol,bloodGlucose,bloodOxygen,respirationRate
         })

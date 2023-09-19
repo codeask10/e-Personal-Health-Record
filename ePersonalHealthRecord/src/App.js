@@ -26,7 +26,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home/>}></Route>
             <Route exact path="/Prescription" element={<Prescription/>}></Route>           
-            <Route exact path="/CBR" element={<CBC/>}></Route>
+            <Route exact path="/CBC" element={<CBC/>}></Route>
             <Route exact path="/Urine" element={<Urine />}></Route>
             <Route exact path="/Liver" element={<LiverFT />}></Route>
             <Route exact path="/OtherTest" element={<OtherTest />}></Route>
