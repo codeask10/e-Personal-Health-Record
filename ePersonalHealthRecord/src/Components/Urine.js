@@ -1,16 +1,45 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 const Urine = () => {
+
+  const [urine, setUrine] = useState({ urineColor: "", PHLevel: "", gravity: "", appearance: "", albumin: "", sugar: "", acetone: "", nitrate: "", keton: "", urobilinogen: "", bileSalt: "", bilePigments: "", WBC: "", pusCells: "", RBC: "", epithelialCells: "", crystals: "", casts: "" });
+  const navigate = useNavigate();
+
+
+  const submit= async (e)=>{
+    e.preventDefault();
+    if (localStorage.getItem('token')) {
+      const response = await fetch("http://localhost:5001/api/urine/addData", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+          urineColor: urine.urineColor, PHLevel: urine.PHLevel, gravity: urine.gravity, appearance: urine.appearance, albumin: urine.albumin, sugar: urine.sugar, acetone: urine.acetone, nitrate: urine.nitrate, keton: urine.keton, urobilinogen: urine.urobilinogen, bileSalt: urine.bileSalt, bilePigments: urine.bilePigments, WBC: urine.WBC, pusCells: urine.pusCells, RBC: urine.pusCells, epithelialCells: urine.epithelialCells, crystals: urine.crystals, casts: urine.casts
+        })
+      });
+      // eslint-disable-next-line 
+      const json = await response.json();
+      console.log(json);
+    }
+    else {
+      navigate('/Login')
+    }
+  }
+  const handleChange = (e) => {
+    setUrine({ ...urine, [e.target.name]: e.target.value });
+  }
   return (
     <div className='ui container my-5'>
-      <form className="ui large form">
+      <form className="ui  form" onSubmit={submit}>
         <h2 className="ui header">Urine Test</h2>
         <h4 className="ui dividing header">Physical Examination </h4>
         <div className="ui equal width grid">
           <div className="doubling four column row" >
             <div className="field column "  >
-              <label htmlFor="urine-color">Urine Color</label>
-              <input type="text" id="urine-color" name="urine-color" patten="[A-Za-z\-]{4,}" placeholder="Urine color..." />
+              <label htmlFor="urineColor">Urine Color</label>
+              <input type="text" id="urineColor" name="urineColor" onChange={handleChange} patten="[A-Za-z\-]{3,}" placeholder="Urine color..." value={urine.urineColor} />
             </div>
             <div className="field column">
               <label>Ref. Range</label>
@@ -19,16 +48,15 @@ const Urine = () => {
               </div>
             </div>
             <div className="field column"  >
-              <label htmlFor="urine-ph">Urine pH:</label>
-              <select id="urine-ph" name="urine-ph" className='ui dropdown'>
-                <option selected>Select ph value</option>
-                <option value="1">Very acidic (pH {'<'} 5)</option>
-                <option value="2">Slightly acidic (pH 5-6)</option>
-                <option value="3">Neutral (pH 7)</option>
-                <option value="4">Slightly alkaline (pH 8-9)</option>
-                <option value="5">Very alkaline (pH {'>'} 9)</option>
+              <label htmlFor="PHLevel"> PH Level :</label>
+              <select id="PHLevel" name="PHLevel" className='ui dropdown' onChange={handleChange} placeholder="Select PH level" value={urine.PHLevel}>
+                <option value="" disabled>Select pH value</option>
+                <option value="Very acidic (PH < 5)">Very acidic (pH {'<'} 5)</option>
+                <option value="Slightly acidic (PH 5-6)">Slightly acidic (pH 5-6)</option>
+                <option value="Neutral (pH 7)">Neutral (pH 7)</option>
+                <option value="Slightly alkaline (pH 8-9)">Slightly alkaline (pH 8-9)</option>
+                <option value="Very alkaline (pH > 9)">Very alkaline (pH {'>'} 9)</option>
               </select>
-
             </div>
             <div className="field column">
               <label>Ref. Range</label>
@@ -40,7 +68,7 @@ const Urine = () => {
           <div className="doubling four column row" >
             <div className="field column "  >
               <label htmlFor="gravity">Specific Gravity</label>
-              <input type="number" id ="gravity" min="0.0" step="0.001" max="5.0 " name="gravity" placeholder="Specific gravity value..." />
+              <input type="text" id="gravity" name="gravity" onChange={handleChange} value={urine.gravity} placeholder="Specific gravity value..." />
             </div>
             <div className="field column">
               <label>Ref. Range</label>
@@ -50,7 +78,7 @@ const Urine = () => {
             </div>
             <div className="field column"  >
               <label htmlFor="appearance">Appearance:</label>
-              <input type="text" name="appearance" placeholder="Appearance..." />
+              <input type="text" name="appearance" onChange={handleChange} value={urine.appearance} placeholder="Appearance..." />
             </div>
             <div className="field column">
               <label>Ref. Range</label>
@@ -59,80 +87,84 @@ const Urine = () => {
               </div>
             </div>
           </div>
-          <h4 className="ui dividing header">Chemical Examination</h4>
+        </div>
+        <h4 className="ui dividing header">Chemical Examination</h4>
+        <div className="ui equal width grid">
           <div className="doubling four column row" >
             <div className="field column "  >
               <label htmlFor="albumin">Albumin:</label>
-              <select id="albumin" name="albumin" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">traces</option>
-                <option value="2">Nill</option>
+              <select id="albumin" name="albumin" onChange={handleChange} value={urine.albumin} className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="traces">traces</option>
+                <option value="Nill">Nill</option>
               </select>
             </div>
             <div className="field column "  >
-            <label htmlFor="sugar">Sugar</label>
-              <select id="sugar" name="sugar" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Nill</option>
-                <option value="2">Present</option>
+              <label htmlFor="sugar">Sugar</label>
+              <select id="sugar" name="sugar" onChange={handleChange} value={urine.sugar} className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Nill">Nill</option>
+                <option value="Present">Present</option>
               </select>
             </div>
             <div className="field column "  >
               <label htmlFor="acetone">Acetone</label>
-              <select id="acetone" name="acetone" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+              <select id="acetone" name="acetone" onChange={handleChange} value={urine.acetone} className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
             <div className="field column "  >
               <label htmlFor="nitrate">Nitrate:</label>
-              <select id="nitrate" name="nitrate" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+              <select id="nitrate" name="nitrate" onChange={handleChange} value={urine.nitrate} className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
           </div>
           <div className="doubling four column row" >
-          <div className="field column "  >
-              <label htmlFor="keton bodies">Keton bodies:</label>
-              <select id="keton bodies" name="keton bodies" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+            <div className="field column "  >
+              <label htmlFor="keton ">Keton bodies:</label>
+              <select id="keton" name="keton" onChange={handleChange} value={urine.keton} className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
             <div className="field column "  >
               <label htmlFor="urobilinogen">Urobilinogen:</label>
-              <select id="urobilinogen" name="urobilinogen" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+              <select id="urobilinogen" name="urobilinogen" onChange={handleChange} value={urine.urobilinogen} className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
             <div className="field column "  >
-              <label htmlFor="bile-salt">Bile salt:</label>
-              <select id="bile-salt" name="bile-salt" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+              <label htmlFor="bileSalt">Bile salt:</label>
+              <select id="bileSalt" name="bileSalt" onChange={handleChange} value={urine.bileSalt} className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
             <div className="field column "  >
-              <label htmlFor="bile-pigments">Bile Pigments:</label>
-              <select id="bile-pigments" name="bile-pigments" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+              <label htmlFor="bilePigments">Bile Pigments:</label>
+              <select id="bilePigments" name="bilePigments" onChange={handleChange} value={urine.bilePigments} className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
           </div>
-          <h4 className="ui dividing header">Microsoft Examination</h4>
+        </div>
+        <h4 className="ui dividing header">Microsoft Examination</h4>
+        <div className="ui equal width grid">
           <div className="doubling four column row" >
             <div className=" field column "  >
               <label htmlFor="WBC">W.B.C</label>
-              <input type="number" id="WBC" name="WBC" min="0" max="20" step="0.1"  placeholder=" W.B.C..." />
+              <input type="text" id="WBC" name="WBC" onChange={handleChange} urine={urine.WBC} placeholder=" W.B.C..." />
             </div>
             <div className="field column">
               <label>Ref. Range</label>
@@ -141,8 +173,8 @@ const Urine = () => {
               </div>
             </div>
             <div className="field column"  >
-              <label htmlFor="pus-cells">Pus cells</label>
-              <input type="text" id ="pus-cells" name="pus-cells" pattern="[0-9\-]{5}"  title="value will be 1-2" placeholder="Pus cells..." />
+              <label htmlFor="pusCells">Pus cells</label>
+              <input type="text" id="pusCells" name="pusCells" onChange={handleChange} value={urine.pusCells}  placeholder="Pus cells..." />
 
             </div>
             <div className="field column">
@@ -154,43 +186,42 @@ const Urine = () => {
           </div>
           <div className="doubling four column row" >
             <div className="field column "  >
-              <label htmlFor="rbc">R.B.C:</label>
-              <select id="rbc" name="rbc" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+              <label htmlFor="RBC">R.B.C:</label>
+              <select id="RBC" name="RBC" onChange={handleChange} value={urine.RBC} className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
             <div className="field column "  >
-              <label htmlFor="epithelial-cells">Epithelial-cells:</label>
-              <select id="epithelial-cells" name="epithelial-cells" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+              <label htmlFor="epithelialCells">Epithelial-cells:</label>
+              <select id="epithelialCells" onChange={handleChange} value={urine.epithelialCells} name="epithelialCells" className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
             <div className="field column "  >
               <label htmlFor="crystals">Crystals:</label>
-              <select id="crystals" name="crystals" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+              <select id="crystals" onChange={handleChange} value={urine.crystals} name="crystals" className='ui dropdown'>
+                <option value="" disabled>Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
             <div className="field column "  >
               <label htmlFor="casts">Casts:</label>
-              <select id="casts" name="casts" className='ui dropdown'>
-                <option selected>Select value</option>
-                <option value="1">Absent</option>
-                <option value="2">Present</option>
+              <select id="casts" onChange={handleChange} value={urine.casts} name="casts" className='ui dropdown'>
+                <option value="" disabled >Select value</option>
+                <option value="Absent">Absent</option>
+                <option value="Present">Present</option>
               </select>
             </div>
           </div>
-          
         </div>
-        <div className=" ui center mt-4" style={{ numberAlign:"center"}}>
-          <div className="ui button me-2" >Save</div>
-          <div className="ui button  me-2" >Update</div>
+        <div className=" my-5" style={{ numberAlign: "center" }}>
+          <button className="ui button me-3" type="submit">Save</button>
+          <button className="ui button ms-3" type="submit">Update</button>
         </div>
       </form>
     </div>

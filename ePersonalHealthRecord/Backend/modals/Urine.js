@@ -1,0 +1,85 @@
+const mongoose=require('mongoose');
+const {Schema}= mongoose;
+
+const UrineSchema=new Schema({
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'user'
+    },
+    urineColor:{
+        type:String,
+        required:true,
+    },
+    PHLevel:{
+        type:String,
+        required:true,
+    },
+    gravity:{
+        type:String,
+        required:true,
+    },
+    appearance:{
+        type:String,
+        required:true,
+    },
+    albumin:{
+        type:String,
+        required:true,
+    },
+     sugar:{
+        type:String,
+        required:true,
+    },
+    acetone:{
+        type:String,
+        required:true,
+    },
+    nitrate:{
+        type:String,
+        required:true,
+    },
+    keton:{
+        type:String,
+        required:true,
+    },
+    urobilinogen:{
+        type:String,
+        required:true,
+    },
+     bileSalt:{
+        type:String,
+        required:true,
+    },
+    bilePigments:{
+        type:String,
+        required:true,
+    },
+     WBC:{
+        type:String,
+        required:true,
+    },
+    pusCells:{
+        type:String,
+        required:true,
+    },
+     RBC:{
+        type:String,
+        required:true,
+    },
+     epithelialCells:{
+        type:String,
+        required:true,
+    },
+    crystals:{
+        type:String,
+        required:true,
+    },
+    casts:{
+        type:String,
+        required:true,
+    } 
+
+});
+
+const urineSchema=mongoose.model("urineSchema",UrineSchema);
+module.exports=urineSchema;

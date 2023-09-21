@@ -13,10 +13,12 @@ app.use(cors());
 
 mongoose();
 //Defining Routes
-app.use("/api/user", require("./routes/auth"))
-app.use("/api/home", require("./routes/home"))
-app.use("/api/prescription", require("./routes/prescription"))
-app.use("/api/CBC", require("./routes/cbc"))
+app.use("/api/user", require("./routes/auth"));
+app.use("/api/home", require("./routes/home"));
+app.use("/api/prescription", require("./routes/prescription"));
+app.use("/api/CBC", require("./routes/cbc"));
+app.use("/api/Urine",require("./routes/urine"));
+
 app.listen(port, () => {
     console.log(`ePHR  backend  listening on port http://localhost:${port}`)
   })
