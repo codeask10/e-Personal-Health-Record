@@ -11,7 +11,6 @@ const Home = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    console.log(e.target.value)
     setHome({ ...home, [e.target.name]: e.target.value });
   }
   const onSubmit = async (e) => {
@@ -37,8 +36,7 @@ return (
   <div className=' ui   container mt-5 mx-4'>
     <h2 className="ui dividing header">Genral Information</h2>
     <form className="ui large form mt-4" onSubmit={onSubmit}>
-      <div className="ui equal width grid">
-        <div className="stackable four column row">
+        <div className="ui stackable equal width grid">
           <div className="column field">
             <label htmlFor='age'>Age</label>
             <div className="ui  input">
@@ -71,7 +69,7 @@ return (
             </div>
           </div>
         </div>
-        <div className="stackable four column row">
+        <div className="ui stackable equal width grid">
           <div className="column field">
             <label htmlFor='temperature'> Body Temperature</label>
             <div className="ui  right labeled  input">
@@ -109,7 +107,7 @@ return (
             </div>
           </div>
         </div>
-        <div className="stackable four column row">
+        <div className="ui stackable equal width grid">
           <div className="column field">
             <label htmlFor='cholesterol'> Cholesterol</label>
             <div className="ui  right labeled  input">
@@ -146,7 +144,6 @@ return (
               </div>
             </div>
           </div>
-        </div>
       </div>
       <div className=" my-5" style={{ textAlign: "center" }}>
         <button className="ui button me-3" type="submit">Save</button>

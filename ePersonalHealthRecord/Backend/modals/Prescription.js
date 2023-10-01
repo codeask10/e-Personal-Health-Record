@@ -27,18 +27,14 @@ const prescriptionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  medications: [
-    {
-      medicines: {
-        type: String,
-        required: true,
-      },
-      dosage: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  medicines: {
+    type: String,
+    required: true,
+  },
+  dosage: {
+    type: String,
+    required: true,
+  }
 });
 
 const Prescription = mongoose.model('Prescription', prescriptionSchema);

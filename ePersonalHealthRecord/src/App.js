@@ -21,7 +21,6 @@ function App() {
     <>
       <Router>
         <Navbar />
-        
         <div className="container">
           <Routes>
             <Route exact path="/" element={<Home/>}></Route>

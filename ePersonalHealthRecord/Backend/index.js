@@ -18,6 +18,11 @@ app.use("/api/home", require("./routes/home"));
 app.use("/api/prescription", require("./routes/prescription"));
 app.use("/api/CBC", require("./routes/cbc"));
 app.use("/api/Urine",require("./routes/urine"));
+app.use("/api/liverTest",require("./routes/liverFunction"));
+app.use("/api/otherTest",require("./routes/otherTest"));
+app.use("/api/userprofile",require("./routes/profile"));
+
+
 
 app.listen(port, () => {
     console.log(`ePHR  backend  listening on port http://localhost:${port}`)
