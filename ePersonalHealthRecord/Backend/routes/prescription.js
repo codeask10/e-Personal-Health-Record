@@ -6,14 +6,14 @@ const fetchuser= require("../middleware/fetchuser")
 
 // ROUTE 1: Get all the information in prescription: GET "/api/prescription/fetchalldata". login required
 router.get('/fetchdata',fetchuser,async(req, res)=>{
-  try {
-      const prescription = await Prescription.find({user:req.user.id});
-      res.send(prescription);
-      
-  } catch (error) {
-      console.error(error.message);
-  res.status(500).send("Internal Server Error");
-  }
+    try {
+        const prescription = await Prescription.find({user:req.user.id});
+        res.send(prescription);
+        
+    } catch (error) {
+        console.error(error.message);
+    res.status(500).send("Internal Server Error");
+    }
 })
 
 // ROUTE 2: Add all the information in home: POST "/api/prescription/addData". login required
@@ -32,7 +32,4 @@ router.post('/addData',fetchuser,async(req, res)=>{
   }
   
 })
-
-module.exports=router;
-
 module.exports = router;

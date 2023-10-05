@@ -1,42 +1,48 @@
-import React, { useState } from 'react'
+import React, {  useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import OtherTestContext from '../Context/OthterTest/OtherTestContext'
 
 const OtherTest = () => {
   const [otherTest, setOtherTest] = useState({ serumUrea: "", serumSodium: "", serumPotassium: "", serumUricAcid: "", eGFR: "", serumTechnology: "", typhoidIgm: "", typhoidIgg: "", typhoidTechnolgy: "" });
   const navigate = useNavigate();
+
+  const context = useContext(OtherTestContext);
+  const {otherTestData, getOtherTestData, addOtherTestData}=context;
+
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      getOtherTestData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+  useEffect(()=>{
+    if(otherTestData.length>0){
+      setOtherTest({
+        serumUrea: otherTestData[0].serumUrea,
+        serumSodium: otherTestData[0].serumSodium,
+        serumPotassium: otherTestData[0].serumPotassium,
+        serumUricAcid: otherTestData[0].serumUricAcid,
+        eGFR: otherTestData[0].eGFR,
+        serumTechnology: otherTestData[0].serumTechnology,
+        typhoidIgm: otherTestData[0].typhoidIgm,
+        typhoidIgg: otherTestData[0].typhoidIgg,
+        typhoidTechnolgy: otherTestData[0].typhoidTechnolgy
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
+  },[otherTestData]);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     if (localStorage.getItem('token')) {
-      const response = await fetch("http://localhost:5001/api/otherTest/addData", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': localStorage.getItem('token')
-        },
-        body: JSON.stringify({
-          serumUrea: otherTest.serumUrea,
-          serumSodium: otherTest.serumSodium,
-          serumPotassium: otherTest.serumPotassium,
-          serumUricAcid: otherTest.serumUricAcid,
-          eGFR: otherTest.eGFR,
-          serumTechnology: otherTest.serumTechnology,
-          typhoidIgm: otherTest.typhoidIgm,
-          typhoidIgg: otherTest.typhoidIgg,
-          typhoidTechnolgy: otherTest.typhoidTechnolgy
-        })
-      });
-      // eslint-disable-next-line 
-      const json = await response.json();
-      console.log(json);
+      addOtherTestData(otherTest);
     }
     else {
       navigate('/Login');
     }
   }
-
-
   const handleChange = (e) => {
-    console.log(e.target.value);
     setOtherTest({ ...otherTest, [e.target.name]: e.target.value });
   }
   return (

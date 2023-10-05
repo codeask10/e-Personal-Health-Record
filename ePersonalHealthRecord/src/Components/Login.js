@@ -13,7 +13,6 @@ const Login = () => {
     }
     const navigate = useNavigate();
     const login= async(e)=>{
-        console.log("in login section",users.email,users.password);
         e.preventDefault();
         const response= await fetch("http://localhost:5001/api/user/login",{
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -22,7 +21,6 @@ const Login = () => {
             },
             body: JSON.stringify({ email: users.email, password: users.password })
         });
-        console.log(response.json);
         // eslint-disable-next-line
         const json = await response.json();
         if(json.success){
@@ -60,7 +58,6 @@ const Login = () => {
             // eslint-disable-next-line 
             const json = await response.json();
             if (json.success) {
-                console.log("I am in")
                 localStorage.setItem('token', json.authtoken)
                 // navigate('/');
                 alert(" Account created successfully ", "success")

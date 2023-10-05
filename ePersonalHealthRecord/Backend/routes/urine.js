@@ -6,8 +6,8 @@ const fetchuser= require("../middleware/fetchuser");
 // ROUTE 1: Get all the information in CBC: GET "/api/urine/fetchalldata". login required
 router.get('/fetchdata',fetchuser,async(req, res)=>{
     try {
-        const Urine = await Urine.find({user:req.user.id});
-        res.send(Urine);
+        const urine = await Urine.find({user:req.user.id});
+        res.send(urine);
         
     } catch (error) {
         console.error(error.message);

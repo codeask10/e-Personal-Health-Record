@@ -1,30 +1,46 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import UserProfileContext from '../Context/UserProfile/UserProfileContext';
 const Userprofile = () => {
 
   let date = moment(new Date()).format('YYYY-MM-DD')
   const [userProfile, setUserProfile] = useState({ firstName: "", lastName: "", dob: "", gender: "", phoneNo: "", email: "", address: "", city: "", pincode: "", state: "", country: "" });
 
   const navigate = useNavigate();
+  const context=useContext(UserProfileContext);
+  const {userProfileData, getUserProfileData, addUserProfileData }=context;
+
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      getUserProfileData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+  useEffect(()=>{
+    if(userProfileData.length>0){
+     setUserProfile({
+      firstName: userProfileData[0].firstName,
+       lastName: userProfileData[0].lastName,
+       dob: userProfileData[0].dob,
+       gender: userProfileData[0].gender,
+       phoneNo: userProfileData[0].phoneNo,
+       email: userProfileData[0].email,
+       address: userProfileData[0].address,
+       city: userProfileData[0].city,
+       pincode: userProfileData[0].pincode,
+       state: userProfileData[0].state,
+       country: userProfileData[0].country
+     })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[userProfileData]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (localStorage.getItem('token')) {
-      const response = await fetch("http://localhost:5001/api/userprofile/addData", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': localStorage.getItem('token')
-        },
-        body: JSON.stringify({
-          firstName: userProfile.firstName, lastName: userProfile.lastName, dob: userProfile.dob, gender: userProfile.gender, phoneNo: userProfile.phoneNo, email: userProfile.email, address: userProfile.address, city: userProfile.city, pincode: userProfile.pincode, state: userProfile.state, country: userProfile.country
-        })
-      });
-      // eslint-disable-next-line 
-      const json = await response.json();
-      console.log(json);
-
+        addUserProfileData(userProfile);
     }
     else {
       navigate('/Login')

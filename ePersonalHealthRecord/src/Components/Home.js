@@ -1,8 +1,10 @@
 import React from 'react'
 // import blood from '../Image/blood.png';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import HomeContext from '../Context/Home/HomeContext';
 const Home = () => {
+
   const [home, setHome] = useState({
     age: "", bloodGroup: "", height: "", weight: "", temperature: "", bodyMassIndex: "",
     bloodPressure: "", pulseRate: "", cholesterol: "", bloodGlucose: "", bloodOxygen: "", respirationRate: ""
@@ -10,32 +12,55 @@ const Home = () => {
 
   const navigate = useNavigate();
 
+  const context = useContext(HomeContext);
+  const { homeData, getHomeData, addHomeData } = context;
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      getHomeData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); 
+  
+  useEffect(()=>{
+    if (homeData.length > 0) {
+      // Update the home state with values from homeData
+      setHome({
+        age: homeData[0].age,
+        bloodGroup: homeData[0].bloodGroup,
+        height: homeData[0].height,
+        weight: homeData[0].weight,
+        temperature: homeData[0].temperature,
+        bodyMassIndex: homeData[0].bodyMassIndex,
+        bloodPressure: homeData[0].bloodPressure,
+        pulseRate: homeData[0].pulseRate,
+        cholesterol: homeData[0].cholesterol,
+        bloodGlucose: homeData[0].bloodGlucose,
+        bloodOxygen: homeData[0].bloodOxygen,
+        respirationRate: homeData[0].respirationRate
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[homeData]);
+
+
   const handleChange = (e) => {
     setHome({ ...home, [e.target.name]: e.target.value });
   }
+
   const onSubmit = async (e) => {
     e.preventDefault();
     if (localStorage.getItem('token')) {
-      const response = await fetch("http://localhost:5001/api/home/addData", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': localStorage.getItem('token')
-        },
-        body: JSON.stringify({ age: home.age, bloodGroup: home.bloodGroup, height: home.height, weight: home.weight, temperature: home.temperature, bodyMassIndex: home.bodyMassIndex, bloodPressure: home.bloodPressure, pulseRate: home.pulseRate, cholesterol: home.cholesterol, bloodGlucose: home.bloodGlucose, bloodOxygen: home.bloodOxygen, respirationRate: home.respirationRate })
-      });
-      // eslint-disable-next-line 
-      const json = await response.json();
-      console.log(json);
+      addHomeData(home);
     }
     else {
       navigate('/Login')
     }
   }
-return (
-  <div className=' ui   container mt-5 mx-4'>
-    <h2 className="ui dividing header">Genral Information</h2>
-    <form className="ui large form mt-4" onSubmit={onSubmit}>
+  return (
+    <div className=' ui   container mt-5 mx-4'>
+      <h2 className="ui dividing header">Genral Information</h2>
+      <form className="ui large form mt-4" onSubmit={onSubmit}>
         <div className="ui stackable equal width grid">
           <div className="column field">
             <label htmlFor='age'>Age</label>
@@ -144,14 +169,14 @@ return (
               </div>
             </div>
           </div>
-      </div>
-      <div className=" my-5" style={{ textAlign: "center" }}>
-        <button className="ui button me-3" type="submit">Save</button>
-        <button className="ui button ms-3" type="submit">Update</button>
-      </div>
-    </form>
-  </div>
-)
+        </div>
+        <div className=" my-5" style={{ textAlign: "center" }}>
+          <button className="ui button me-3" type="submit">Save</button>
+          <button className="ui button ms-3" type="submit">Update</button>
+        </div>
+      </form>
+    </div>
+  )
 }
 
 export default Home

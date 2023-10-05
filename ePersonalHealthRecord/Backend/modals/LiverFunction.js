@@ -2,6 +2,10 @@ const mongoose=require('mongoose');
 const {Schema}= mongoose;
 
 const LiverSchema= new Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    },
     bilirubinTotal:{
         type:String,
         required:true,

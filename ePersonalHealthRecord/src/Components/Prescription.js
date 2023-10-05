@@ -1,31 +1,50 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import moment from 'moment';
 import "../CSS/Prescription.css";
+import PrescriptionContext from '../Context/prescription/PrescriptionContext';
+import { useNavigate } from 'react-router-dom';
+
 const Prescription = () => {
   let date = moment(new Date()).format('YYYY-MM-DD');
-
   const [prescription, setPrescription] = useState({ drName: '', H_CName: '', phoneNumber: '', date: '', symptoms: '', diagnosis: '', medicines: '', dosage: '' });
+
+  const context = useContext(PrescriptionContext);
+  const { prescriptionData,getPrescriptionData,addPrescriptionData} = context;
+
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      getPrescriptionData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+  useEffect(()=>{
+      if(prescriptionData.length>0){
+        setPrescription({
+          drName: prescriptionData[0].drName, 
+          H_CName: prescriptionData[0].H_CName, 
+          phoneNumber: prescriptionData[0].phoneNumber, 
+          date: prescriptionData[0].date, 
+          symptoms: prescriptionData[0].symptoms, 
+          diagnosis: prescriptionData[0].diagnosis, 
+          medicines: prescriptionData[0].medicines, 
+          dosage: prescriptionData[0].dosage
+        })
+      }
+  },[prescriptionData]);
+
   const handleChange = (e) => {
-    console.log(e.target.value)
     setPrescription({ ...prescription, [e.target.name]: e.target.value })
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (localStorage.getItem('token')) {
-      const response = await fetch("http://localhost:5001/api/prescription/addData", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': localStorage.getItem('token')
-        },
-        body: JSON.stringify({
-          drName: prescription.drName, H_CName: prescription.H_CName, phoneNumber: prescription.phoneNumber, date: prescription.date, symptoms: prescription.symptoms, diagnosis: prescription.diagnosis, medicines: prescription.medicines, dosage: prescription.dosage
-        })
-      });
-      // eslint-disable-next-line 
-      const json = await response.json();
-      console.log(json);
-    };
+      addPrescriptionData(prescription);
+    }
+    else {
+      navigate('/Login')
+    }
   }
   return (
     <div className=" ui container mt-5">
@@ -53,24 +72,24 @@ const Prescription = () => {
           </div>
         </div>
         <div className="ui stackable equal width  grid  ">
-            <div className="column field">
-              <label htmlFor="symptoms">Symptoms</label>
-              <input type="text" id="symptoms" name="symptoms" value={prescription.symptoms} onChange={handleChange} pattern="[A-Za-z ,]{1,50}" placeholder="Headache, Fever, Rashes...." />
-            </div>
-            <div className="column field">
-              <label htmlFor="diagnosis">Diagnosis:</label>
-              <input type="text" id="diagnosis" name="diagnosis" value={prescription.diagnosis} onChange={handleChange} pattern="[A-Za-z ,]{1,50}" placeholder="Diabetes..." />
-            </div>
+          <div className="column field">
+            <label htmlFor="symptoms">Symptoms</label>
+            <input type="text" id="symptoms" name="symptoms" value={prescription.symptoms} onChange={handleChange} pattern="[A-Za-z ,]{1,50}" placeholder="Headache, Fever, Rashes...." />
+          </div>
+          <div className="column field">
+            <label htmlFor="diagnosis">Diagnosis:</label>
+            <input type="text" id="diagnosis" name="diagnosis" value={prescription.diagnosis} onChange={handleChange} pattern="[A-Za-z ,]{1,50}" placeholder="Diabetes..." />
+          </div>
         </div>
         <div className="ui stackable equal width  grid  ">
-            <div className=" column field" >
-              <label htmlFor="medicines">Medicines</label>
-              <input type="text" id="medicines" name="medicines" pattern="[A-Za-z0-9 ]{1,50}" placeholder="Medicines..." title="enter value as Paracetamol, Ciprofloxacin and Dexamethasone etc" value={prescription.medicines} onChange={handleChange} />
-            </div>
-            <div className="column field" >
-              <label htmlFor="dosage">Dosage</label>
-              <input type="text" id="dosage" name="dosage" pattern="[A-Za-z0-9 .]{1,50}" placeholder="Dosage.." title="enter value as 2.5ml| 1 tablet for 3 times in a day" value={prescription.dosage} onChange={handleChange} />
-            </div>
+          <div className=" column field" >
+            <label htmlFor="medicines">Medicines</label>
+            <input type="text" id="medicines" name="medicines" pattern="[A-Za-z0-9 ]{1,50}" placeholder="Medicines..." title="enter value as Paracetamol, Ciprofloxacin and Dexamethasone etc" value={prescription.medicines} onChange={handleChange} />
+          </div>
+          <div className="column field" >
+            <label htmlFor="dosage">Dosage</label>
+            <input type="text" id="dosage" name="dosage" pattern="[A-Za-z0-9 .]{1,50}" placeholder="Dosage.." title="enter value as 2.5ml| 1 tablet for 3 times in a day" value={prescription.dosage} onChange={handleChange} />
+          </div>
         </div>
         <div className=" my-5" style={{ textAlign: "center" }}>
           <button className="ui button me-3" type="submit">Save</button>

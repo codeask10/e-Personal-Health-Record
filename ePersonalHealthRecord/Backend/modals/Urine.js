@@ -81,5 +81,5 @@ const UrineSchema=new Schema({
 
 });
 
-const urineSchema=mongoose.model("urineSchema",UrineSchema);
+const urineSchema=mongoose.model("urine",UrineSchema);
 module.exports=urineSchema;

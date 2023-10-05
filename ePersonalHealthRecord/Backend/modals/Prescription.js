@@ -3,6 +3,10 @@
 const mongoose = require('mongoose');
 
 const prescriptionSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user'
+  },
   drName: {
     type: String,
     required: true,
@@ -16,7 +20,7 @@ const prescriptionSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   symptoms: {

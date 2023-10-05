@@ -1,33 +1,42 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import LiverFTContext from '../Context/LiverFunction/LiverFTContext'
 
 
 const LiverFT = () => {
     const [liverTest, setLiverTest] = useState({ bilirubinTotal: "", bilirubinDirect: "", bilirubinIndirect: "", sgptALT: "", sgotAST: "", alkalinePhosphates: "", toatalProteins: "", albumin: "" })
     const navigate = useNavigate();
+
+    const context= useContext(LiverFTContext);
+    const {LFTData, getLFTData, addLFTData}=context;
+
+    useEffect(()=>{
+        if(localStorage.getItem('token')){
+            getLFTData();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
+
+    useEffect(()=>{
+        if(LFTData.length>0){
+            setLiverTest({
+                bilirubinTotal: LFTData[0].bilirubinTotal,
+                bilirubinDirect: LFTData[0].bilirubinDirect,
+                bilirubinIndirect: LFTData[0].bilirubinIndirect,
+                sgptALT: LFTData[0].sgptALT,
+                sgotAST: LFTData[0].sgotAST,
+                alkalinePhosphates: LFTData[0].alkalinePhosphates,
+                toatalProteins: LFTData[0].toatalProteins,
+                albumin: LFTData[0].albumin
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[LFTData]);
+
     const onSubmit = async (e) => {
         e.preventDefault();
         if (localStorage.getItem('token')) {
-            const response = await fetch("http://localhost:5001/api/liverTest/addData", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'auth-token': localStorage.getItem('token')
-                },
-                body: JSON.stringify({
-                    bilirubinTotal: liverTest.bilirubinTotal,
-                    bilirubinDirect: liverTest.bilirubinDirect,
-                    bilirubinIndirect: liverTest.bilirubinIndirect,
-                    sgptALT: liverTest.sgptALT,
-                    sgotAST: liverTest.sgotAST,
-                    alkalinePhosphates: liverTest.alkalinePhosphates,
-                    toatalProteins: liverTest.toatalProteins,
-                    albumin: liverTest.albumin
-                })
-            });
-            // eslint-disable-next-line 
-            const json = await response.json();
-            console.log(json);
+            addLFTData(liverTest);
         }
         else {
             navigate('/Login');

@@ -1,27 +1,50 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext} from 'react'
 import { useNavigate } from 'react-router-dom';
+import UrineTesetContext from '../Context/UrineTest/UrineTestContext';
 const Urine = () => {
 
   const [urine, setUrine] = useState({ urineColor: "", PHLevel: "", gravity: "", appearance: "", albumin: "", sugar: "", acetone: "", nitrate: "", keton: "", urobilinogen: "", bileSalt: "", bilePigments: "", WBC: "", pusCells: "", RBC: "", epithelialCells: "", crystals: "", casts: "" });
   const navigate = useNavigate();
 
+  const context=useContext(UrineTesetContext);
+  const {urineTestData, getUrineTestData, addUrineTestData}=context;
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      getUrineTestData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+  useEffect(()=>{
+    if(urineTestData.length>0){
+      console.log(urineTestData[0].WBC)
+      setUrine({
+       urineColor: urineTestData[0].urineColor,
+          PHLevel: urineTestData[0].PHLevel,
+          gravity: urineTestData[0].gravity,
+          appearance: urineTestData[0].appearance,
+          albumin: urineTestData[0].albumin,
+          sugar: urineTestData[0].sugar,
+          acetone: urineTestData[0].acetone,
+          nitrate: urineTestData[0].nitrate,
+          keton: urineTestData[0].keton,
+          urobilinogen: urineTestData[0].urobilinogen,
+          bileSalt: urineTestData[0].bileSalt,
+          bilePigments: urineTestData[0].bilePigments,
+          WBC: urineTestData[0].WBC,
+          pusCells: urineTestData[0].pusCells,
+          RBC: urineTestData[0].RBC,
+          epithelialCells: urineTestData[0].epithelialCells,
+          crystals: urineTestData[0].crystals,
+          casts: urineTestData[0].casts
+     })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[urineTestData]);
 
   const submit = async (e) => {
     e.preventDefault();
     if (localStorage.getItem('token')) {
-      const response = await fetch("http://localhost:5001/api/urine/addData", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': localStorage.getItem('token')
-        },
-        body: JSON.stringify({
-          urineColor: urine.urineColor, PHLevel: urine.PHLevel, gravity: urine.gravity, appearance: urine.appearance, albumin: urine.albumin, sugar: urine.sugar, acetone: urine.acetone, nitrate: urine.nitrate, keton: urine.keton, urobilinogen: urine.urobilinogen, bileSalt: urine.bileSalt, bilePigments: urine.bilePigments, WBC: urine.WBC, pusCells: urine.pusCells, RBC: urine.pusCells, epithelialCells: urine.epithelialCells, crystals: urine.crystals, casts: urine.casts
-        })
-      });
-      // eslint-disable-next-line 
-      const json = await response.json();
-      console.log(json);
+      addUrineTestData(urine);
     }
     else {
       navigate('/Login')
@@ -160,7 +183,7 @@ const Urine = () => {
         <div className="ui stackable equal width grid" >
           <div className=" field column "  >
             <label htmlFor="WBC">W.B.C</label>
-            <input type="text" id="WBC" name="WBC" onChange={handleChange} urine={urine.WBC} placeholder=" W.B.C..." />
+            <input type="text" id="WBC" name="WBC" onChange={handleChange} value={urine.WBC} placeholder=" W.B.C..." />
           </div>
           <div className="field column">
             <label>Ref. Range</label>

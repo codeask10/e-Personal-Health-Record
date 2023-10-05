@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import "../CSS/CBC.css";
 import { useNavigate } from 'react-router-dom';
+import CBCContext from '../Context/CBC/CBCContext';
 
 
 const CBC = () => {
@@ -11,44 +12,48 @@ const CBC = () => {
 
   const navigate = useNavigate();
 
+  const context= useContext(CBCContext);
+  const {CBCData,getCBCData,addCBCData}=context;
+
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      getCBCData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+  useEffect(()=>{
+    if(CBCData.length>0){
+      setCbc({
+        haemoglobin: CBCData[0].haemoglobin,
+        totalWBCCount: CBCData[0].totalWBCCount,
+        neutrophils: CBCData[0].neutrophils,
+        lymphocytes: CBCData[0].lymphocytes,
+        monocytes: CBCData[0].monocytes,
+        eosinophils: CBCData[0].eosinophils,
+        absNeutrophisCount: CBCData[0].absNeutrophisCount,
+        absLymphocytesCount: CBCData[0].absLymphocytesCount,
+        absMonocytesCount: CBCData[0].absMonocytesCount,
+        absEosinophilsCount: CBCData[0].absEosinophilsCount,
+        plateletCount: CBCData[0].plateletCount,
+        RBCCount: CBCData[0].RBCCount,
+        MCV: CBCData[0].MCV,
+        MCH: CBCData[0].MCH,
+        MCHC: CBCData[0].MCHC,
+        RDWCV: CBCData[0].RDWCV
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[CBCData]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (localStorage.getItem('token')) {
-      const response = await fetch("http://localhost:5001/api/CBC/addData", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': localStorage.getItem('token')
-        },
-        body: JSON.stringify({
-          haemoglobin: cbc.haemoglobin,
-          totalWBCCount: cbc.totalWBCCount,
-          neutrophils: cbc.neutrophils,
-          lymphocytes: cbc.lymphocytes,
-          monocytes: cbc.monocytes,
-          eosinophils: cbc.eosinophils,
-          absNeutrophisCount: cbc.absNeutrophisCount,
-          absLymphocytesCount: cbc.absLymphocytesCount,
-          absMonocytesCount: cbc.absMonocytesCount,
-          absEosinophilsCount: cbc.absEosinophilsCount,
-          plateletCount: cbc.plateletCount,
-          RBCCount: cbc.RBCCount,
-          MCV: cbc.MCV,
-          MCH: cbc.MCH,
-          MCHC: cbc.MCHC,
-          RDWCV: cbc.RDWCV
-        })
-      });
-      // eslint-disable-next-line 
-      const json = await response.json();
-      console.log(json);
-
+        addCBCData(cbc);
     }
     else {
       navigate('/Login')
     }
-
   }
 
   const handleChange = (e) => {

@@ -1,12 +1,11 @@
 const express=require('express');
-const LiverTest= require('../modals/LiverFunction');
 const router = express.Router();
 const fetchuser= require('../middleware/fetchuser');
-const liverTest = require('../modals/LiverFunction');
+const LiverTest = require('../modals/LiverFunction');
 
-router.get('fetchAllData',fetchuser,async(req,res)=>{
+router.get('/fetchData',fetchuser,async(req,res)=>{
     try {
-        const data= await liverTest.find({user:req.user.id});
+        const data= await LiverTest.find({user:req.user.id});
         res.send(data);
     } catch (error) {
         console.error(error.message);

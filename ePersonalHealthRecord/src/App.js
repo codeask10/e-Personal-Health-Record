@@ -15,6 +15,13 @@ import OtherTest from './Components/OtherTest';
 import Login from './Components/Login';
 import Prescription from './Components/Prescription';
 import LiverFT from './Components/LiverFT';
+import HomeState from './Context/Home/HomeState';
+import PrescriptionState from './Context/prescription/PrescriptionState'
+import CBCState from './Context/CBC/CBCState';
+import LiverFTState from './Context/LiverFunction/LiverFTState';
+import UrineTestState from './Context/UrineTest/UrineTestState';
+import OtherTestState from './Context/OthterTest/OtherTestState';
+import UserProfileState from './Context/UserProfile/UserProfileState';
 
 function App() {
   return (
@@ -23,13 +30,13 @@ function App() {
         <Navbar />
         <div className="container">
           <Routes>
-            <Route exact path="/" element={<Home/>}></Route>
-            <Route exact path="/Prescription" element={<Prescription/>}></Route>           
-            <Route exact path="/CBC" element={<CBC/>}></Route>
-            <Route exact path="/Urine" element={<Urine />}></Route>
-            <Route exact path="/Liver" element={<LiverFT />}></Route>
-            <Route exact path="/OtherTest" element={<OtherTest />}></Route>
-            <Route exact path="/Userprofile" element={<Userprofile/>}></Route>
+            <Route exact path="/" element={<HomeState><Home/></HomeState>}></Route>
+            <Route exact path="/Prescription" element={<PrescriptionState><Prescription/></PrescriptionState>}></Route>           
+            <Route exact path="/CBC" element={<CBCState><CBC/></CBCState>}></Route>
+            <Route exact path="/Urine" element={<UrineTestState><Urine /> </UrineTestState>}></Route>
+            <Route exact path="/Liver" element={<LiverFTState><LiverFT /></LiverFTState>}></Route>
+            <Route exact path="/OtherTest" element={<OtherTestState><OtherTest /> </OtherTestState>}></Route>
+            <Route exact path="/Userprofile" element={<UserProfileState><Userprofile/> </UserProfileState>}></Route>
             <Route exact path="/About" element={<About/>}></Route>
             <Route exact path="/Login" element={<Login/>}></Route>   
           </Routes>
