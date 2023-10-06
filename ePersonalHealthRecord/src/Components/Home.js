@@ -3,7 +3,7 @@ import React from 'react'
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomeContext from '../Context/Home/HomeContext';
-const Home = () => {
+const Home = ({setProgress}) => {
 
   const [home, setHome] = useState({
     age: "", bloodGroup: "", height: "", weight: "", temperature: "", bodyMassIndex: "",
@@ -14,7 +14,7 @@ const Home = () => {
 
   const context = useContext(HomeContext);
   const { homeData, getHomeData, addHomeData } = context;
-  useEffect(() => {
+  useEffect(() => { 
     if (localStorage.getItem('token')) {
       getHomeData();
     }
@@ -24,6 +24,7 @@ const Home = () => {
   useEffect(()=>{
     if (homeData.length > 0) {
       // Update the home state with values from homeData
+      setProgress(100)
       setHome({
         age: homeData[0].age,
         bloodGroup: homeData[0].bloodGroup,
@@ -50,12 +51,15 @@ const Home = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setProgress(10)
     if (localStorage.getItem('token')) {
       addHomeData(home);
+      setProgress(60)
     }
     else {
       navigate('/Login')
     }
+    setProgress(100);
   }
   return (
     <div className=' ui   container mt-5 mx-4'>

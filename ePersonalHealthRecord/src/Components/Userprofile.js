@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import UserProfileContext from '../Context/UserProfile/UserProfileContext';
-const Userprofile = () => {
+const Userprofile = ({setProgress}) => {
 
   let date = moment(new Date()).format('YYYY-MM-DD')
   const [userProfile, setUserProfile] = useState({ firstName: "", lastName: "", dob: "", gender: "", phoneNo: "", email: "", address: "", city: "", pincode: "", state: "", country: "" });
@@ -19,6 +19,7 @@ const Userprofile = () => {
   },[]);
 
   useEffect(()=>{
+    setProgress(100);
     if(userProfileData.length>0){
      setUserProfile({
       firstName: userProfileData[0].firstName,
@@ -39,13 +40,15 @@ const Userprofile = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setProgress(20)
     if (localStorage.getItem('token')) {
         addUserProfileData(userProfile);
+        setProgress(70);
     }
     else {
       navigate('/Login')
     }
-
+    setProgress(100);
   }
   const handleChange = (e) => {
     setUserProfile({ ...userProfile, [e.target.name]: e.target.value });

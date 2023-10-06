@@ -1,7 +1,7 @@
     import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import '../CSS/Login.css'
-const Login = () => {
+const Login = ({setProgress}) => {
     // for login
     const [users, setUser]= useState({
         email:"",
@@ -14,6 +14,7 @@ const Login = () => {
     const navigate = useNavigate();
     const login= async(e)=>{
         e.preventDefault();
+        setProgress(10)
         const response= await fetch("http://localhost:5001/api/user/login",{
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
@@ -21,9 +22,11 @@ const Login = () => {
             },
             body: JSON.stringify({ email: users.email, password: users.password })
         });
+        setProgress(50)
         // eslint-disable-next-line
         const json = await response.json();
         if(json.success){
+            setProgress(90);
             localStorage.setItem('token',json.authtoken)
             navigate('/');
             alert("Account logged in successfully  ","success")            
@@ -32,6 +35,7 @@ const Login = () => {
            alert("Invalid credential ","danger")
 
         }
+        setProgress(10);
     }
 
     // For Registration
@@ -47,6 +51,7 @@ const Login = () => {
     const { name, email, password,cPassword} = register
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setProgress(10)
         if (password ===  cPassword) {
             const response = await fetch(`http://localhost:5001/api/user/register`, {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -55,6 +60,7 @@ const Login = () => {
                 },
                 body: JSON.stringify({ name, email, password })
             });
+            setProgress(160)
             // eslint-disable-next-line 
             const json = await response.json();
             if (json.success) {
@@ -62,7 +68,7 @@ const Login = () => {
                 // navigate('/');
                 alert(" Account created successfully ", "success")
                 setRegister({ name: "", email: "", password: "", cPassword: "" })
-
+                setProgress(100);
             }
             else {
                 alert("Sorry a user with this email already exists", "danger")

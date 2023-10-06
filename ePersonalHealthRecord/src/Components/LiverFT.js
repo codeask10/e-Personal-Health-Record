@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LiverFTContext from '../Context/LiverFunction/LiverFTContext'
 
 
-const LiverFT = () => {
+const LiverFT = ({setProgress}) => {
     const [liverTest, setLiverTest] = useState({ bilirubinTotal: "", bilirubinDirect: "", bilirubinIndirect: "", sgptALT: "", sgotAST: "", alkalinePhosphates: "", toatalProteins: "", albumin: "" })
     const navigate = useNavigate();
 
@@ -18,6 +18,7 @@ const LiverFT = () => {
     },[]);
 
     useEffect(()=>{
+        setProgress(100);
         if(LFTData.length>0){
             setLiverTest({
                 bilirubinTotal: LFTData[0].bilirubinTotal,
@@ -35,12 +36,15 @@ const LiverFT = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        setProgress(10)
         if (localStorage.getItem('token')) {
             addLFTData(liverTest);
+            setProgress(50)
         }
         else {
             navigate('/Login');
         }
+        setProgress(100);
     }
     const handleChange = (e) => {
         setLiverTest({ ...liverTest, [e.target.name]: e.target.value })

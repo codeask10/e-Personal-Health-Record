@@ -2,7 +2,7 @@ import React, {  useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import OtherTestContext from '../Context/OthterTest/OtherTestContext'
 
-const OtherTest = () => {
+const OtherTest = ({setProgress}) => {
   const [otherTest, setOtherTest] = useState({ serumUrea: "", serumSodium: "", serumPotassium: "", serumUricAcid: "", eGFR: "", serumTechnology: "", typhoidIgm: "", typhoidIgg: "", typhoidTechnolgy: "" });
   const navigate = useNavigate();
 
@@ -35,12 +35,15 @@ const OtherTest = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setProgress(20)
     if (localStorage.getItem('token')) {
       addOtherTestData(otherTest);
+      setOtherTest(60)
     }
     else {
       navigate('/Login');
     }
+    setProgress(100);
   }
   const handleChange = (e) => {
     setOtherTest({ ...otherTest, [e.target.name]: e.target.value });

@@ -4,7 +4,7 @@ import "../CSS/Prescription.css";
 import PrescriptionContext from '../Context/prescription/PrescriptionContext';
 import { useNavigate } from 'react-router-dom';
 
-const Prescription = () => {
+const Prescription = ({setProgress}) => {
   let date = moment(new Date()).format('YYYY-MM-DD');
   const [prescription, setPrescription] = useState({ drName: '', H_CName: '', phoneNumber: '', date: '', symptoms: '', diagnosis: '', medicines: '', dosage: '' });
 
@@ -20,6 +20,7 @@ const Prescription = () => {
   },[]);
 
   useEffect(()=>{
+    setProgress(100);
       if(prescriptionData.length>0){
         setPrescription({
           drName: prescriptionData[0].drName, 
@@ -32,6 +33,7 @@ const Prescription = () => {
           dosage: prescriptionData[0].dosage
         })
       }
+       // eslint-disable-next-line react-hooks/exhaustive-deps
   },[prescriptionData]);
 
   const handleChange = (e) => {
@@ -39,12 +41,15 @@ const Prescription = () => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setProgress(20)
     if (localStorage.getItem('token')) {
       addPrescriptionData(prescription);
+      setProgress(70);
     }
     else {
       navigate('/Login')
     }
+    setProgress(100);
   }
   return (
     <div className=" ui container mt-5">

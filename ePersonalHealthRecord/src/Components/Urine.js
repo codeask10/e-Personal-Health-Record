@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext} from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 import UrineTesetContext from '../Context/UrineTest/UrineTestContext';
-const Urine = () => {
+const Urine = ({setProgress}) => {
 
   const [urine, setUrine] = useState({ urineColor: "", PHLevel: "", gravity: "", appearance: "", albumin: "", sugar: "", acetone: "", nitrate: "", keton: "", urobilinogen: "", bileSalt: "", bilePigments: "", WBC: "", pusCells: "", RBC: "", epithelialCells: "", crystals: "", casts: "" });
   const navigate = useNavigate();
 
+  const location=useLocation();
   const context=useContext(UrineTesetContext);
   const {urineTestData, getUrineTestData, addUrineTestData}=context;
   useEffect(()=>{
@@ -15,6 +16,7 @@ const Urine = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   useEffect(()=>{
+    setProgress(100);
     if(urineTestData.length>0){
       console.log(urineTestData[0].WBC)
       setUrine({
@@ -43,12 +45,16 @@ const Urine = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    setProgress(20);
     if (localStorage.getItem('token')) {
       addUrineTestData(urine);
+      setProgress(70)
+      location.reload();
     }
     else {
       navigate('/Login')
     }
+    setProgress(100);
   }
   const handleChange = (e) => {
     setUrine({ ...urine, [e.target.name]: e.target.value });

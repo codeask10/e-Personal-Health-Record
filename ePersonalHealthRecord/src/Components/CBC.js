@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import CBCContext from '../Context/CBC/CBCContext';
 
 
-const CBC = () => {
+const CBC = ({setProgress}) => {
 
   const [cbc, setCbc] = useState({
     haemoglobin: "", totalWBCCount: "", neutrophils: "", lymphocytes: "", monocytes: "", eosinophils: "", absNeutrophisCount: "", absLymphocytesCount: "", absMonocytesCount: "", absEosinophilsCount: "", plateletCount: "", RBCCount: "", MCV: "", MCH: "", MCHC: "", RDWCV: ""
@@ -23,6 +23,7 @@ const CBC = () => {
   },[]);
 
   useEffect(()=>{
+    setProgress(100);
     if(CBCData.length>0){
       setCbc({
         haemoglobin: CBCData[0].haemoglobin,
@@ -48,12 +49,15 @@ const CBC = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setProgress(30)
     if (localStorage.getItem('token')) {
         addCBCData(cbc);
+        setProgress(70)
     }
     else {
       navigate('/Login')
     }
+    setProgress(100);
   }
 
   const handleChange = (e) => {
