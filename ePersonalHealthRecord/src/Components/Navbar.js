@@ -25,6 +25,7 @@ const Navbar = ({setProgress}) => {
     const navigate = useNavigate();
     
     const handleLogout=(e)=>{
+        setProgress(40);
         localStorage.removeItem('token');
         location.reload();
         navigate('/')

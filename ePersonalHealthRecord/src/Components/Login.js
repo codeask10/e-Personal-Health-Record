@@ -1,41 +1,23 @@
-    import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react'
 import '../CSS/Login.css'
+import LoginContex from '../Context/Login/LoginContext';
 const Login = ({setProgress}) => {
     // for login
     const [users, setUser]= useState({
         email:"",
         password:""
     });
-    
+    const context= useContext(LoginContex);
+    const {userLogin, userRegister }=context;
     const handleChange=(e)=>{
         setUser({...users, [e.target.name]: e.target.value });
     }
-    const navigate = useNavigate();
     const login= async(e)=>{
         e.preventDefault();
-        setProgress(10)
-        const response= await fetch("http://localhost:5001/api/user/login",{
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: users.email, password: users.password })
-        });
-        setProgress(50)
-        // eslint-disable-next-line
-        const json = await response.json();
-        if(json.success){
-            setProgress(90);
-            localStorage.setItem('token',json.authtoken)
-            navigate('/');
-            alert("Account logged in successfully  ","success")            
-        }
-        else{
-           alert("Invalid credential ","danger")
-
-        }
-        setProgress(10);
+        setProgress(30);
+        userLogin(users);
+        setProgress(50);
+        setProgress(100);
     }
 
     // For Registration
@@ -48,31 +30,14 @@ const Login = ({setProgress}) => {
     const onChange=(e)=>{
         setRegister({...register, [e.target.name]:e.target.value});
     }
-    const { name, email, password,cPassword} = register
     const handleSubmit = async (e) => {
         e.preventDefault();
         setProgress(10)
-        if (password ===  cPassword) {
-            const response = await fetch(`http://localhost:5001/api/user/register`, {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, password })
-            });
-            setProgress(160)
-            // eslint-disable-next-line 
-            const json = await response.json();
-            if (json.success) {
-                localStorage.setItem('token', json.authtoken)
-                // navigate('/');
-                alert(" Account created successfully ", "success")
-                setRegister({ name: "", email: "", password: "", cPassword: "" })
-                setProgress(100);
-            }
-            else {
-                alert("Sorry a user with this email already exists", "danger")
-            }
+        if (register.password ===  register.cPassword) {
+            setProgress(50)
+            userRegister(register);
+            setRegister({name: "", email: "", password: "", cPassword: ""});
+            setProgress(100);
         }
         else {
             alert("Confirm Password does not match", "danger")
