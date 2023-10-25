@@ -3,25 +3,27 @@ import React from 'react'
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomeContext from '../Context/Home/HomeContext';
-const Home = ({setProgress}) => {
-
+const Home = ({ setProgress }) => {
   const [home, setHome] = useState({
     age: "", bloodGroup: "", height: "", weight: "", temperature: "", bodyMassIndex: "",
     bloodPressure: "", pulseRate: "", cholesterol: "", bloodGlucose: "", bloodOxygen: "", respirationRate: ""
   });
-
+  const [isUpdate,setIsUpadete] = useState(false);
   const navigate = useNavigate();
-
+  const BMI = (home.weight / ((home.height / 100) * (home.height / 100)));
+  if (home.height.length !== 0 && home.weight.length !== 0) {
+    home.bodyMassIndex = BMI.toFixed(2);
+  }
   const context = useContext(HomeContext);
   const { homeData, getHomeData, addHomeData } = context;
-  useEffect(() => { 
+  useEffect(() => {
     if (localStorage.getItem('token')) {
       getHomeData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); 
-  
-  useEffect(()=>{
+  }, []);
+
+  useEffect(() => {
     if (homeData.length > 0) {
       // Update the home state with values from homeData
       setProgress(100)
@@ -42,7 +44,7 @@ const Home = ({setProgress}) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[homeData]);
+  }, [homeData]);
 
 
   const handleChange = (e) => {
@@ -62,8 +64,8 @@ const Home = ({setProgress}) => {
     setProgress(100);
   }
   return (
-    <div className=' ui   container mt-5 mx-4'>
-      <h2 className="ui dividing header">Genral Information</h2>
+    <div className=' ui container mt-3 mx-4'>
+      <h2 className="ui dividing header">Genral Information {Object.keys(home).length > 0 ? <i className="fas fa-edit mx-2 " style={{ float: 'right' }} onClick={() => { setIsUpadete(true);setProgress(100); }}></i> : null}</h2>
       <form className="ui large form mt-4" onSubmit={onSubmit}>
         <div className="ui stackable equal width grid">
           <div className="column field">
@@ -111,7 +113,7 @@ const Home = ({setProgress}) => {
           <div className="column field ">
             <label htmlFor='bodyMassIndex'> Body mass index (BMI) </label>
             <div className="ui right labeled input">
-              <input type="text" id="bodyMassIndex" name="bodyMassIndex" value={home.bodyMassIndex} onChange={handleChange} placeholder='BMI value' />
+              <input type="text" id="bodyMassIndex" name="bodyMassIndex" value={home.bodyMassIndex} onChange={handleChange} placeholder='BMI value' readOnly="readOnly" />
               <div className="ui basic label px-1" >
                 kg/m^2
               </div>
@@ -175,8 +177,12 @@ const Home = ({setProgress}) => {
           </div>
         </div>
         <div className=" my-5" style={{ textAlign: "center" }}>
-          <button className="ui button me-3" type="submit">Save</button>
-          <button className="ui button ms-3" type="submit">Update</button>
+          {Object.keys(home).length < 0 && isUpdate === false ?
+            <button className="ui button me-3" type="submit">Save</button> :
+            console.log(isUpdate)
+          }
+          {isUpdate === true ? <button className="ui button ms-3" type="submit">Update</button> : null}
+
         </div>
       </form>
     </div>
